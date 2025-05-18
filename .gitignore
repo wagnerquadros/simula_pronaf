@@ -1,0 +1,28 @@
+# Arquivos de projeto
+*.iml
+.idea/
+.idea/*
+
+# Arquivos locais de propriedade e CHAVES
+local.properties
+
+# Arquivos de cache
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Diretórios de build
+.gradle/
+**/build/
+.externalNativeBuild
+.cxx
+
+# Arquivos temporários e do sistema
+.DS_Store
+captures
+
+
+
