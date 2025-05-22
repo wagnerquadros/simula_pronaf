@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.wagner.simulapronaf.components.ValorCard
+import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ValorCard
 
 
 class MainActivity : ComponentActivity() {

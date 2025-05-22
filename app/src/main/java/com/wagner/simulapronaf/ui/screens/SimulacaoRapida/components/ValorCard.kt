@@ -1,4 +1,4 @@
-package com.wagner.simulapronaf.components
+package com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
