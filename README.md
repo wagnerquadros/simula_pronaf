@@ -34,12 +34,12 @@ Abaixo, uma visualização da interface da funcionalidade **Simulação Rápida*
 ### 1. Tela de entrada de dados
 O usuário informa o valor do crédito, a taxa anual e o número de parcelas:
 
-<img src="docs/img/tela-simulacao-rapida.png" alt="Tela de Simulação" width="40%"/>
+<img src="docs/img/tela-simulacao-rapida.png" alt="Tela de Simulação" width="25%"/>
 
 ### 2. Tela de resultados da simulação
 Após calcular, os resultados são exibidos de forma clara e visual:
 
-<img src="docs/img/tela-cronograma.png" alt="Tela de Cronograma" width="40%"/>
+<img src="docs/img/tela-cronograma.png" alt="Tela de Cronograma" width="25%"/>
 
 ## 🛣️ Roadmap
 
