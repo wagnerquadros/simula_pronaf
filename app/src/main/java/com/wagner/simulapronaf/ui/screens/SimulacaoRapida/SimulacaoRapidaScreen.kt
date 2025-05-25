@@ -1,6 +1,7 @@
 package com.wagner.simulapronaf.ui.screens.SimulacaoRapida
 
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.wagner.simulapronaf.ui.components.shared.BarraSuperior
 import com.wagner.simulapronaf.ui.components.shared.BotaoPrimario
 import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ParcelasCard
 import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.TaxaCard
@@ -32,14 +34,20 @@ fun SimulacaoRapidaScreen() {
     var taxa by remember { mutableStateOf(1.0f) }
     var modalidade by remember { mutableStateOf("Anual") }
     val context = LocalContext.current
+    val activity = context as? ComponentActivity
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(4.dp)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+        BarraSuperior(
+            onSairClick = {
+                activity?.finish()
+            }
+        )
+
         ValorCard(
             valorSimulacao = valorSimulacao,
             onValorChange = { valorSimulacao = it }
