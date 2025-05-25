@@ -2,7 +2,6 @@ package com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -29,18 +28,17 @@ import com.wagner.simulapronaf.ui.components.shared.SliderDecimal
 import com.wagner.simulapronaf.ui.components.shared.TituloCard
 import com.wagner.simulapronaf.ui.theme.CorDoCard
 import com.wagner.simulapronaf.ui.theme.VerdePetroleo
-import java.text.NumberFormat
-import java.util.Locale
 
 @Composable
-fun ValorCard(
-    valorSimulacao: Float,
+fun TaxaCard(
+    taxa: Float,
     onValorChange: (Float) -> Unit,
     modifier: Modifier = Modifier.padding(16.dp)
 ) {
 
+
     Card(
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(16.dp),
         colors = CardDefaults.cardColors(containerColor = CorDoCard),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         content = {
@@ -49,7 +47,8 @@ fun ValorCard(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                TituloCard(texto = "Valor")
+
+                TituloCard(texto = "Taxa")
                 DivisorHorizontal()
 
                 Row(
@@ -58,61 +57,51 @@ fun ValorCard(
                         .padding(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
-
                     IconeLegenda(
                         icone = Icons.Outlined.DoNotDisturbOn,
                         descricao = "Subtrair",
-                        texto = "1 mil"
+                        texto = "1"
                     )
 
                     SliderDecimal(
-                        valor = valorSimulacao,
-                        onValorChange = onValorChange,
-                        faixa = 1000f..300000f,
-                        passo = 100f,
+                        valor = taxa,
+                        onValorChange = { onValorChange(it) },
+                        faixa = 1.0f..6.0f,
+                        passo = 0.5f,
                         modifier = Modifier
                             .weight(1f)
                             .padding(horizontal = 10.dp)
                     )
 
-
                     IconeLegenda(
                         icone = Icons.Outlined.AddCircleOutline,
                         descricao = "Adcionar",
-                        texto = "300 mil"
+                        texto = "6"
                     )
                 }
 
                 Text(
-                    text = formatarValor(valorSimulacao.toInt()),
+                    text = taxa.toString() + " %",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(4.dp),
                     textAlign = TextAlign.Center,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = VerdePetroleo
                 )
             }
-
         }
     )
 }
 
-fun formatarValor(valor: Number): String {
-    val formatoBR = NumberFormat.getNumberInstance(Locale("pt", "BR"))
-    return "R$ ${formatoBR.format(valor)}"
-}
-
-
 @Preview(showBackground = true)
 @Composable
-private fun ValorCardPreview() {
-    var valorSimulado by remember { mutableStateOf(1000f) }
-    Column(modifier = Modifier.fillMaxSize()) {
-        ValorCard(
-            valorSimulacao = valorSimulado,
-            onValorChange = { valorSimulado = it })
+private fun ParcelasCardPreview() {
+    var taxa by remember { mutableStateOf(1.0f) }
+    Column(modifier = Modifier.fillMaxWidth()) {
+        TaxaCard(
+            taxa = taxa,
+            onValorChange = { taxa = it })
     }
 }

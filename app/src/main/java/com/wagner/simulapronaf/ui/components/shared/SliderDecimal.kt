@@ -1,4 +1,4 @@
-package com.wagner.simulapronaf.ui.screens.sharedComponents
+package com.wagner.simulapronaf.ui.components.shared
 
 import androidx.compose.material.Slider
 import androidx.compose.material.SliderDefaults
@@ -9,21 +9,20 @@ import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 import kotlin.math.roundToInt
 
 @Composable
-fun ParcelasSlider(
-    valor: Int,
-    onValorChange: (Int) -> Unit,
-    faixa: IntRange,
+fun SliderDecimal(
+    valor: Float,
+    onValorChange: (Float) -> Unit,
+    faixa: ClosedFloatingPointRange<Float>,
+    passo: Float = 100f,
     modifier: Modifier = Modifier
 ) {
-    val steps = faixa.last - faixa.first - 1
-
     Slider(
-        value = valor.toFloat(),
+        value = valor,
         onValueChange = {
-            onValorChange(it.roundToInt().coerceIn(faixa))
+            val arredondado = (it / passo).roundToInt() * passo
+            onValorChange(arredondado)
         },
-        valueRange = faixa.first.toFloat()..faixa.last.toFloat(),
-        steps = steps,
+        valueRange = faixa,
         modifier = modifier,
         colors = SliderDefaults.colors(
             thumbColor = VerdePetroleo,

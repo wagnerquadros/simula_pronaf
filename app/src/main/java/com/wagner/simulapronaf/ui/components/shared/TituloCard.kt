@@ -1,4 +1,4 @@
-package com.wagner.simulapronaf.ui.screens.sharedComponents
+package com.wagner.simulapronaf.ui.components.shared
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text

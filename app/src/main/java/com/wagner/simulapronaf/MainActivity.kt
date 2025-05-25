@@ -9,7 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.SimulacaoRapidaScreen
 import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ParcelasCard
+import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.TaxaCard
 import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ValorCard
 
 
@@ -18,19 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var valorSimulacao by remember { mutableStateOf(1000f) }
-
-            Column {
-                ValorCard(
-                    valorSimulacao = valorSimulacao,
-                    onValorChange = { valorSimulacao = it }
-                )
-
-                ParcelasCard()
-            }
-
-
-
+            SimulacaoRapidaScreen()
         }
     }
 }
