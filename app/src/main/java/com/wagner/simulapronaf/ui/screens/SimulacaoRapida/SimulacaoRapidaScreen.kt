@@ -73,6 +73,10 @@ fun SimulacaoRapidaScreen() {
                 texto = "Simular",
                 onClick = {
                     Toast.makeText(context, "Apertou o botão", Toast.LENGTH_SHORT).show()
+                    println("VALOR: R$ $valorSimulacao")
+                    println("MODALIDADE: $modalidade")
+                    println("PRAZO: $parcelas anos")
+                    println("TAXA: $taxa% a.a.")
                 }
             )
         }
