@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.DoNotDisturbOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +36,7 @@ import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 @Composable
 fun ParcelasCard(
     parcelas: Int,
+    carencia: Int,
     onParcelasChange: (Int) -> Unit,
     modalidade: String,
     onModalidadeChange: (String) -> Unit,
@@ -54,27 +56,32 @@ fun ParcelasCard(
                 TituloCard(texto = "Parcelas")
                 DivisorHorizontal()
 
-                Row(
-                    modifier = Modifier,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Text(
+                Column {
+                    Row(
                         modifier = Modifier,
-                        text = "Modalidade da parcela",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = CinzaClaroTextoSecundario
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
 
-                    ModalidadeDrop(
-                        opcoes = listOf("Anual", "Semestral"),
-                        valorSelecionado = modalidade,
-                        onSelecionar = onModalidadeChange,
-                        modifier = Modifier,
-                    )
+                        Text(
+                            modifier = Modifier,
+                            text = "Modalidade da parcela",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = CinzaClaroTextoSecundario
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        ModalidadeDrop(
+                            opcoes = listOf("Anual", "Semestral"),
+                            valorSelecionado = modalidade,
+                            onSelecionar = onModalidadeChange,
+                            modifier = Modifier,
+                        )
+                    }
+
+
                 }
+
 
                 DivisorHorizontal()
                 Spacer(modifier = Modifier.padding(8.dp))
@@ -128,9 +135,14 @@ fun ParcelasCard(
 @Composable
 private fun ParcelasCardPreview() {
     var parcelas by remember { mutableStateOf(1) }
+    var carencia by remember { mutableStateOf(1) }
     var modalidade by remember { mutableStateOf("Anual") }
-    Column(modifier = Modifier.fillMaxWidth()) { ParcelasCard(    parcelas = parcelas,
-        onParcelasChange = { parcelas = it },
-        modalidade = modalidade,
-        onModalidadeChange = { modalidade = it }) }
+    Column(modifier = Modifier.fillMaxWidth()) {
+        ParcelasCard(
+            parcelas = parcelas,
+            carencia = carencia,
+            onParcelasChange = { parcelas = it },
+            modalidade = modalidade,
+            onModalidadeChange = { modalidade = it })
+    }
 }

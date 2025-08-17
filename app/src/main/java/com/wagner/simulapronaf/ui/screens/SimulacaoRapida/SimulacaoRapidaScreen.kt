@@ -31,6 +31,7 @@ import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ValorCard
 fun SimulacaoRapidaScreen() {
     var valorSimulacao by remember { mutableStateOf(1000f) }
     var parcelas by remember { mutableStateOf(1) }
+    var carencia by remember { mutableStateOf(1) }
     var taxa by remember { mutableStateOf(1.0f) }
     var modalidade by remember { mutableStateOf("Anual") }
     val context = LocalContext.current
@@ -55,6 +56,7 @@ fun SimulacaoRapidaScreen() {
 
         ParcelasCard(
             parcelas = parcelas,
+            carencia = carencia,
             onParcelasChange = { parcelas = it },
             modalidade = modalidade,
             onModalidadeChange = { modalidade = it }
