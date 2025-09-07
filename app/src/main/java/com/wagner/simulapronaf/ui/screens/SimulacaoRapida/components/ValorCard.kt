@@ -70,7 +70,7 @@ fun ValorCard(
                         valor = valorSimulacao,
                         onValorChange = onValorChange,
                         faixa = 1000f..300000f,
-                        passo = 100f,
+                        passo = 500f,
                         modifier = Modifier
                             .weight(1f)
                             .padding(horizontal = 10.dp)
@@ -80,7 +80,7 @@ fun ValorCard(
                     IconeLegenda(
                         icone = Icons.Outlined.AddCircleOutline,
                         descricao = "Adcionar",
-                        texto = "300 mil"
+                        texto = "250 mil"
                     )
                 }
 

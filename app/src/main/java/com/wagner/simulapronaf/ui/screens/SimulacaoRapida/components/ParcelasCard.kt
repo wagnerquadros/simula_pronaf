@@ -36,7 +36,6 @@ import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 @Composable
 fun ParcelasCard(
     parcelas: Int,
-    carencia: Int,
     onParcelasChange: (Int) -> Unit,
     modalidade: String,
     onModalidadeChange: (String) -> Unit,
@@ -64,7 +63,7 @@ fun ParcelasCard(
 
                         Text(
                             modifier = Modifier,
-                            text = "Modalidade da parcela",
+                            text = "Carência",
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             color = CinzaClaroTextoSecundario
@@ -72,7 +71,7 @@ fun ParcelasCard(
                         Spacer(modifier = Modifier.weight(1f))
 
                         ModalidadeDrop(
-                            opcoes = listOf("Anual", "Semestral"),
+                            opcoes = listOf("Sem carência", "01 ano", "02 anos", "03 anos"),
                             valorSelecionado = modalidade,
                             onSelecionar = onModalidadeChange,
                             modifier = Modifier,
@@ -140,7 +139,6 @@ private fun ParcelasCardPreview() {
     Column(modifier = Modifier.fillMaxWidth()) {
         ParcelasCard(
             parcelas = parcelas,
-            carencia = carencia,
             onParcelasChange = { parcelas = it },
             modalidade = modalidade,
             onModalidadeChange = { modalidade = it })

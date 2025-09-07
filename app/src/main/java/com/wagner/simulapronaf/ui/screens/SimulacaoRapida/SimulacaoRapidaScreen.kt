@@ -21,6 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.wagner.simulapronaf.domain.models.ModalidadeEnum
+import com.wagner.simulapronaf.domain.models.SimulacaoEntrada
+import com.wagner.simulapronaf.domain.models.carenciaFromString
+import com.wagner.simulapronaf.domain.service.impl.SimulacaoService
+import com.wagner.simulapronaf.domain.service.utils.CalculadorAnual
 import com.wagner.simulapronaf.ui.components.shared.BarraSuperior
 import com.wagner.simulapronaf.ui.components.shared.BotaoPrimario
 import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ParcelasCard
@@ -33,7 +38,7 @@ fun SimulacaoRapidaScreen() {
     var parcelas by remember { mutableStateOf(1) }
     var carencia by remember { mutableStateOf(1) }
     var taxa by remember { mutableStateOf(1.0f) }
-    var modalidade by remember { mutableStateOf("Anual") }
+    var modalidade by remember { mutableStateOf("Sem carência") }
     val context = LocalContext.current
     val activity = context as? ComponentActivity
 
@@ -56,7 +61,6 @@ fun SimulacaoRapidaScreen() {
 
         ParcelasCard(
             parcelas = parcelas,
-            carencia = carencia,
             onParcelasChange = { parcelas = it },
             modalidade = modalidade,
             onModalidadeChange = { modalidade = it }
@@ -75,10 +79,18 @@ fun SimulacaoRapidaScreen() {
                 texto = "Simular",
                 onClick = {
                     Toast.makeText(context, "Apertou o botão", Toast.LENGTH_SHORT).show()
-                    println("VALOR: R$ $valorSimulacao")
-                    println("MODALIDADE: $modalidade")
-                    println("PRAZO: $parcelas anos")
-                    println("TAXA: $taxa% a.a.")
+
+                    val entrada = SimulacaoEntrada(
+                        valorSimulacao   = valorSimulacao.toDouble(),
+                        prazo            = parcelas,
+                        taxaDeJuros      = taxa.toDouble(),
+                        carencia         = carenciaFromString(modalidade),
+                        modalidadeParcela = ModalidadeEnum.ANUAL
+                    )
+
+                    val service = SimulacaoService()
+                    val resultado = service.criarSimulacao(entrada)
+                    println(resultado)
                 }
             )
         }

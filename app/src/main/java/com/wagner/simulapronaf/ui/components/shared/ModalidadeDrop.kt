@@ -98,10 +98,10 @@ fun ModalidadeDrop(
 @Preview(showBackground = true)
 @Composable
 fun ModalidadeDropPreview() {
-    var selecionado by remember { mutableStateOf("Anual") }
+    var selecionado by remember { mutableStateOf("Sem carência") }
 
     ModalidadeDrop(
-        opcoes = listOf("Anual", "Semestral"),
+        opcoes = listOf("Sem carência", "01 ano", "02 anos", "03 anos"),
         valorSelecionado = selecionado,
         onSelecionar = { selecionado = it }
     )
