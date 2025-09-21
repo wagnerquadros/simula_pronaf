@@ -10,6 +10,7 @@ Fornecer uma ferramenta prática e confiável que permita ao agricultor visualiz
 
 - **Tela 1: Entrada de Dados**
     - Valor do financiamento
+    - Carência
     - Taxa de juros anual
     - Quantidade de parcelas
 
@@ -23,8 +24,9 @@ Fornecer uma ferramenta prática e confiável que permita ao agricultor visualiz
 ## Tecnologias Utilizadas
 
 - **Kotlin + Jetpack Compose** (UI moderna e declarativa)
+- **Material 3** + Theming personalizado com cores verde e branco
 - Arquitetura MVVM
-- Theming personalizado com cores verde e branco
+- Organização modular por **features**
 - Layout responsivo e acessível
 
 ## 🧭 Navegação do MVP
@@ -46,13 +48,11 @@ Após calcular, os resultados são exibidos de forma clara e visual:
 ### ✅ MVP (versão atual)
 - [x] Tela de entrada de dados para simulação rápida
 - [x] Layout com identidade visual (verde, branco, tipografia personalizada)
-- [ ] Tela de exibição dos resultados em formato visual
-- [ ] Cálculo das parcelas, apresentando capital, juros, saldo devedor
-- [ ] Organização modular por features (Jetpack Compose)
+- [x] Campo de entrada de valor com **validações e placeholder** (substitui slider da v1.0 → v2.0)
+- [x] Tela de exibição dos resultados em formato visual
+- [x] Cálculo das parcelas, apresentando capital, juros, saldo devedor
 
 ### 🚧 Próximas etapas
-- [ ] Tela de **cronograma detalhado** com datas reais de pagamento
-- [ ] Implementação de **validação de dados** (ex: campos obrigatórios, limites numéricos)
 - [ ] Adição de **animações suaves** ou microinterações com Compose
 
 ### 📡 Fase de expansão
@@ -61,3 +61,36 @@ Após calcular, os resultados são exibidos de forma clara e visual:
 - [ ] Armazenamento seguro de simulações com Room (banco local)
 - [ ] Exportar/Compartilhar resultado da simulação em PDF ou formato compartilhável
 - [ ] Tela de ajuda/contexto com informações sobre o PRONAF
+
+## 📦 Instalação / Build
+
+Este repositório é **privado**.  
+Para compilar o projeto, é necessário ter permissões de acesso.  
+
+1. Abra no **Android Studio (Giraffe ou superior)**.  
+2. Sincronize as dependências com o Gradle.  
+3. Rode no emulador ou dispositivo físico (API 26+).  
+
+## 📝 CHANGELOG
+
+### [2.0.0] - 2025-09-21
+#### Alterado
+- Substituição do **ValorCard com Slider** (v1.0) por **ValorCardInput** com campo de texto digitável e validações.
+- Novo comportamento: valor inicial vazio, `R$` fixo como prefixo e placeholder "digite o valor aqui".
+- Implementação de validações:
+  - Faixa de valores: **1.000 a 250.000**
+  - Limite de **6 dígitos**
+  - Mensagem de erro exibida caso valor esteja fora da faixa
+  - Campo foca automaticamente em caso de erro
+- Melhorias de usabilidade (cursor permanece no final, placeholder amigável).
+
+#### Removido
+- Slider sensível para entrada de valores, considerado de difícil uso para grandes faixas.
+
+### [1.0.0] - 2025-07-06
+#### Adicionado
+- Estrutura inicial do app com duas telas (Entrada de dados + Resultados).
+- ValorCard com **Slider** para entrada do valor.
+- Configuração de projeto com **Kotlin**, **Jetpack Compose**, **Material 3**.
+
+---
