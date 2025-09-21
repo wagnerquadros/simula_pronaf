@@ -4,11 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ValorCard
+import com.wagner.simulapronaf.ui.navigation.AppNav
 
 
 class MainActivity : ComponentActivity() {
@@ -16,12 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var valorSimulacao by remember { mutableStateOf(1000f) }
-
-            ValorCard(
-                valorSimulacao = valorSimulacao,
-                onValorChange = { valorSimulacao = it }
-            )
+            AppNav()
         }
     }
 }

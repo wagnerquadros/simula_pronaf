@@ -1,170 +1,203 @@
 package com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Slider
-import androidx.compose.material.SliderDefaults
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.DoNotDisturbOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.wagner.simulapronaf.ui.theme.CinzaTextoPrimario
+import com.wagner.simulapronaf.ui.screens.sharedComponents.DivisorHorizontal
+import com.wagner.simulapronaf.ui.screens.sharedComponents.IconeLegenda
+import com.wagner.simulapronaf.ui.screens.sharedComponents.SliderDecimal
+import com.wagner.simulapronaf.ui.screens.sharedComponents.TituloCard
 import com.wagner.simulapronaf.ui.theme.CorDoCard
 import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 import java.text.NumberFormat
 import java.util.Locale
-import kotlin.math.roundToInt
 
 @Composable
 fun ValorCard(
     valorSimulacao: Float,
     onValorChange: (Float) -> Unit,
-    modifier: Modifier = Modifier.padding(16.dp)
-
+    modifier: Modifier = Modifier.padding(16.dp),
+    minimo: Int = 1_000,
+    maximo: Int = 250_000,
+    isErro: Boolean = false,
+    mensagemErro: String? = null,
+    focusRequester: FocusRequester,
+    maxDigitos: Int = 6
 ) {
 
+    var campo by remember {
+        mutableStateOf(TextFieldValue(text = "", selection = TextRange(0)))
+    }
+
+    LaunchedEffect(valorSimulacao) {
+        val t = if (valorSimulacao > 0) formatarValor(valorSimulacao.toInt()) else ""
+        campo = TextFieldValue(text = t, selection = TextRange(t.length))
+    }
+
     Card(
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 0.dp),
         colors = CardDefaults.cardColors(containerColor = CorDoCard),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "Valor",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = CinzaTextoPrimario
-                )
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
+        ) {
+            TituloCard(texto = "Valor")
+            DivisorHorizontal()
+            Spacer(modifier = Modifier.height(8.dp))
 
-                HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    thickness = 1.2.dp,
-                    color = CinzaTextoPrimario
-                )
+            TextField(
+                value = campo,
+                onValueChange = { novo ->
+                    val digitosNovos = novo.text.filter { it.isDigit() }
+                    if (digitosNovos.length > maxDigitos) return@TextField
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.wrapContentWidth()
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.DoNotDisturbOn,
-                            contentDescription = "Remover",
-                            tint = CinzaTextoPrimario,
-                            modifier = Modifier.padding(top = 25.dp)
-                        )
-
-                        Text(
-                            modifier = Modifier.padding(top = 5.dp),
-                            text = "1 mil",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = CinzaTextoPrimario,
-                            textAlign = TextAlign.Center
-                        )
+                    if (digitosNovos.isEmpty()) {
+                        campo = TextFieldValue("", selection = TextRange(0))
+                        onValorChange(0f)
+                        return@TextField
                     }
 
-                    Slider(
-                        value = valorSimulacao,
-                        onValueChange = {
-                            val arredondado = (it / 100).roundToInt() * 100f
-                            onValorChange(arredondado)
-                        },
-                        valueRange = 1000f..300000f,
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 16.dp),
-                        colors = SliderDefaults.colors(
-                            thumbColor = VerdePetroleo,
-                            activeTrackColor = VerdePetroleo,
-                            inactiveTrackColor = CinzaTextoPrimario
-                        )
+                    val bruto = digitosNovos.toLongOrNull() ?: 0L
+                    val formatado = formatarValor(bruto.toInt())
+
+                    campo = TextFieldValue(
+                        text = formatado,
+                        selection = TextRange(formatado.length)
                     )
+                    onValorChange(bruto.toFloat())
+                },
 
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.wrapContentWidth()
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.AddCircleOutline,
-                            contentDescription = "Adicionar",
-                            tint = CinzaTextoPrimario,
-                            modifier = Modifier.padding(top = 25.dp)
-                        )
-
-                        Text(
-                            modifier = Modifier.padding(top = 5.dp),
-                            text = "300 mil",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = CinzaTextoPrimario,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-
-                val valorFormatado = NumberFormat.getNumberInstance(Locale("pt", "BR"))
-                    .format(valorSimulacao.toInt())
-
-                Text(
-                    text = formatarValor(valorSimulacao.toInt()),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    textAlign = TextAlign.Center,
+                singleLine = true,
+                textStyle = LocalTextStyle.current.copy(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = VerdePetroleo
-                )
-            }
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = { }),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+                isError = isErro,
+                supportingText = {
+                    Text(
+                        text = mensagemErro ?: "Faixa: ${formatarValor(minimo)} a ${formatarValor(maximo)}"
+                    )
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = VerdePetroleo,
+                    unfocusedTextColor = VerdePetroleo,
+                    focusedIndicatorColor = VerdePetroleo,
+                    unfocusedIndicatorColor = Color.LightGray,
+                    focusedLabelColor = Color.Gray,
+                    unfocusedLabelColor = Color.Gray,
+                    focusedPrefixColor = VerdePetroleo,
+                    unfocusedPrefixColor = VerdePetroleo,
+                    focusedPlaceholderColor = Color.LightGray,
+                    unfocusedPlaceholderColor = Color.LightGray,
+                ),
+                prefix = {
+                    Text(
+                        text = "R$ ",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = VerdePetroleo
+                    )
+                },
+
+                placeholder = {
+                    Text(
+                        text = "Digite o valor aqui",
+                        fontSize = 20.sp,
+                        color = Color.LightGray
+                    )
+                }
+            )
         }
-    )
+    }
 }
 
 fun formatarValor(valor: Number): String {
     val formatoBR = NumberFormat.getNumberInstance(Locale("pt", "BR"))
-    return "R$ ${formatoBR.format(valor)}"
+    return "${formatoBR.format(valor)}"
 }
 
 
 @Preview(showBackground = true)
 @Composable
-private fun ValorCardPreview() {
-    var valorSimulado by remember { mutableStateOf(1000f)}
-    Column(modifier = Modifier.fillMaxSize()) {
+fun ValorCardPreviewEstados() {
+    var valorOk by remember { mutableStateOf(10_000f) }
+    var valorErro by remember { mutableStateOf(300_000f) } // fora da faixa para demonstrar erro
+
+    val focoOk = remember { FocusRequester() }
+    val focoErro = remember { FocusRequester() }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+
         ValorCard(
-            valorSimulacao = valorSimulado,
-            onValorChange = { valorSimulado = it })
+            valorSimulacao = valorOk,
+            onValorChange = { valorOk = it },
+            minimo = 1_000,
+            maximo = 250_000,
+            isErro = false,
+            mensagemErro = null,
+            focusRequester = focoOk
+        )
+
+
+        ValorCard(
+            valorSimulacao = valorErro,
+            onValorChange = { valorErro = it },
+            minimo = 1_000,
+            maximo = 250_000,
+            isErro = true,
+            mensagemErro = "Informe um valor entre R$ 1.000 e R$ 250.000",
+            focusRequester = focoErro
+        )
     }
 }
