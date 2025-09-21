@@ -1,4 +1,4 @@
-package com.wagner.simulapronaf.ui.components.shared
+package com.wagner.simulapronaf.ui.screens.sharedComponents
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.height
@@ -20,20 +20,16 @@ import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 @Composable
 fun BarraSuperior(onSairClick: () -> Unit) {
     TopAppBar(
-        modifier = Modifier.height(60.dp),
         title = {
             Text(
                 text = "SimulaPRONAF",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
-                modifier = Modifier.padding(top = 4.dp)
+                color = Color.White
             )
         },
         actions = {
-            IconButton(onClick = onSairClick,
-               modifier = Modifier.padding(top = 4.dp)
-            ) {
+            IconButton(onClick = onSairClick) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                     contentDescription = "Sair",

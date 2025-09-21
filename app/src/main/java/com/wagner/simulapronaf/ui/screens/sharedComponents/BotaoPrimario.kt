@@ -1,4 +1,4 @@
-package com.wagner.simulapronaf.ui.components.shared
+package com.wagner.simulapronaf.ui.screens.sharedComponents
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape

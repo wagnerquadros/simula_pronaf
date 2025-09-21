@@ -22,10 +22,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.wagner.simulapronaf.ui.components.shared.DivisorHorizontal
-import com.wagner.simulapronaf.ui.components.shared.IconeLegenda
-import com.wagner.simulapronaf.ui.components.shared.SliderDecimal
-import com.wagner.simulapronaf.ui.components.shared.TituloCard
+import com.wagner.simulapronaf.ui.screens.sharedComponents.DivisorHorizontal
+import com.wagner.simulapronaf.ui.screens.sharedComponents.IconeLegenda
+import com.wagner.simulapronaf.ui.screens.sharedComponents.SliderDecimal
+import com.wagner.simulapronaf.ui.screens.sharedComponents.TituloCard
 import com.wagner.simulapronaf.ui.theme.CorDoCard
 import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 
@@ -38,7 +38,7 @@ fun TaxaCard(
 
 
     Card(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp),
         colors = CardDefaults.cardColors(containerColor = CorDoCard),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         content = {
@@ -50,6 +50,17 @@ fun TaxaCard(
 
                 TituloCard(texto = "Taxa")
                 DivisorHorizontal()
+
+                Text(
+                    text = taxa.toString() + " %",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = VerdePetroleo
+                )
 
                 Row(
                     modifier = Modifier
@@ -66,7 +77,7 @@ fun TaxaCard(
                     SliderDecimal(
                         valor = taxa,
                         onValorChange = { onValorChange(it) },
-                        faixa = 1.0f..6.0f,
+                        faixa = 1.0f..8.0f,
                         passo = 0.5f,
                         modifier = Modifier
                             .weight(1f)
@@ -76,20 +87,10 @@ fun TaxaCard(
                     IconeLegenda(
                         icone = Icons.Outlined.AddCircleOutline,
                         descricao = "Adcionar",
-                        texto = "6"
+                        texto = "8"
                     )
                 }
 
-                Text(
-                    text = taxa.toString() + " %",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp),
-                    textAlign = TextAlign.Center,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = VerdePetroleo
-                )
             }
         }
     )

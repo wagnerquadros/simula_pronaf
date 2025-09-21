@@ -1,4 +1,4 @@
-package com.wagner.simulapronaf.ui.components.shared
+package com.wagner.simulapronaf.ui.screens.sharedComponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

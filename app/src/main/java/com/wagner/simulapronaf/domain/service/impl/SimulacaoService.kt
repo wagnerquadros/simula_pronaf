@@ -23,9 +23,9 @@ fun main(){
     val service = SimulacaoService()
 
     val entradaAnual = SimulacaoEntrada(
-        valorSimulacao = 100000.0,
-        prazo = 8,
-        taxaDeJuros = 0.0,
+        valorSimulacao = 100000.00,
+        prazo = 7,
+        taxaDeJuros = 8.0,
         carencia = 0
     )
 

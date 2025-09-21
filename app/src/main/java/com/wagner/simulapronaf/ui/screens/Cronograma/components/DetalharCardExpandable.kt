@@ -25,29 +25,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wagner.simulapronaf.R
-import com.wagner.simulapronaf.ui.components.shared.TextoResumoDetalhe
-
-import com.wagner.simulapronaf.ui.theme.AzulBotao
+import com.wagner.simulapronaf.domain.service.utils.toBRL
+import com.wagner.simulapronaf.ui.screens.sharedComponents.TextoResumoDetalhe
 import com.wagner.simulapronaf.ui.theme.CorDoCard
 import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 
 
 @Composable
 fun DetalharCardExpandable(
+    capital: Double,
+    juros: Double,
+    saldo: Double,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember {
         mutableStateOf(false)
     }
     val rotation by animateFloatAsState(
-        targetValue = if(expanded) 180f else 0f,
+        targetValue = if (expanded) 180f else 0f,
         animationSpec = tween(durationMillis = 500)
     )
 
@@ -57,7 +58,6 @@ fun DetalharCardExpandable(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         content = {
-
 
             Column(
                 modifier = Modifier
@@ -76,9 +76,13 @@ fun DetalharCardExpandable(
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                             .fillMaxWidth(),
                     ) {
-                        TextoResumoDetalhe("Capital", "20.000,00", fontSize = 12.sp)
-                        TextoResumoDetalhe("Capital", "20.000,00", fontSize = 12.sp)
-                        TextoResumoDetalhe("Capital", "20.000,00", fontSize = 12.sp)
+                        TextoResumoDetalhe(
+                            "Capital (amortização)",
+                            capital.toBRL(),
+                            fontSize = 12.sp
+                        )
+                        TextoResumoDetalhe("Juros pagos", juros.toBRL(), fontSize = 12.sp)
+                        TextoResumoDetalhe("Saldo devedor", saldo.toBRL(), fontSize = 12.sp)
                     }
                 }
             }
@@ -106,11 +110,8 @@ fun DetalharCardExpandable(
                         modifier = Modifier
                             .rotate(rotation)
                     )
-
                 }
             }
-
-
         }
     )
 }
@@ -126,6 +127,10 @@ private fun DetalharCardExpandablePreview() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DetalharCardExpandable()
+        DetalharCardExpandable(
+            capital = 10000.00,
+            juros = 1000.00,
+            saldo = 10000.00
+        )
     }
 }

@@ -1,48 +1,58 @@
 package com.wagner.simulapronaf.domain.service.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.wagner.simulapronaf.domain.models.Parcela
 import com.wagner.simulapronaf.domain.models.SimulacaoEntrada
 import com.wagner.simulapronaf.domain.models.SimulacaoResultado
+import com.wagner.simulapronaf.domain.service.utils.politicas.AjusteResiduo
+import com.wagner.simulapronaf.domain.service.utils.politicas.AjusteResiduoParcela
+import com.wagner.simulapronaf.domain.service.utils.politicas.JurosUtils
+import com.wagner.simulapronaf.domain.service.utils.politicas.PoliticaJuros
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
-import kotlin.math.pow
 
-class CalculadorAnual (
-    private val entrada: SimulacaoEntrada
-){
+class CalculadorAnual(
+    private val entrada: SimulacaoEntrada,
+    private val dataBase: LocalDate = LocalDate.now(),
+    
+    private val ajusteResiduo: AjusteResiduo = AjusteResiduoParcela(),
+    private val politicaJuros: PoliticaJuros = JurosUtils()
+) {
     val DIAS_UTEIS_NO_ANO = 252
 
     fun calcular(): SimulacaoResultado {
         val listaParcelas = mutableListOf<Parcela>()
-        val amortizacaoAnualCapital = arredondar(entrada.valorSimulacao / (entrada.prazo - entrada.carencia))
+        val nAmortizacoes = entrada.prazo - entrada.carencia
+        val amortizacaoAnualCapital = arredondar(entrada.valorSimulacao / (nAmortizacoes))
         var saldoCapital = entrada.valorSimulacao
         var jurosRemanescente = 0.0
         var saldoDevedor = arredondar(saldoCapital + jurosRemanescente)
         var anosRestantes = entrada.prazo
         var jurosCalculadosNaCarencia = 0.0
 
-        println("Amortixação de capital anual: " + amortizacaoAnualCapital)
-
-        for (ano in 1 .. entrada.carencia){
-            var saldoDuranteCarencia = calcularJurosComTaxaEfetivaAnual(saldoDevedor, entrada.taxaDeJuros)
+        for (ano in 1..entrada.carencia) {
+            val saldoDuranteCarencia = politicaJuros.calcularJurosComTaxaEfetivaAnual(
+                saldoDevedor, entrada.taxaDeJuros, DIAS_UTEIS_NO_ANO
+            )
+            saldoDevedor = arredondar(saldoDuranteCarencia)
             jurosCalculadosNaCarencia = arredondar(saldoDuranteCarencia - saldoCapital)
-            println("================================= Juros carencia : " + jurosCalculadosNaCarencia)
-            println("================================= saldo da carenca : " + saldoDuranteCarencia)
         }
 
-        for (ano in 1 + entrada.carencia .. entrada.prazo){
-            val dataVencimento = LocalDate.now().plusYears(ano.toLong())
-            val saldoInicialPeriodo = arredondar(saldoCapital + jurosRemanescente + jurosCalculadosNaCarencia)
-            //val saldoInicial = saldoDevedor
+        for (ano in 1 + entrada.carencia..entrada.prazo) {
 
+            val dataVencimento = dataBase.plusYears(ano.toLong())
+            val saldoInicialPeriodo = arredondar(
+                saldoCapital + jurosRemanescente + jurosCalculadosNaCarencia
+            )
 
-            saldoDevedor = calcularJurosComTaxaEfetivaAnual(saldoInicialPeriodo, entrada.taxaDeJuros)
+            saldoDevedor = politicaJuros.calcularJurosComTaxaEfetivaAnual(
+                saldoInicialPeriodo, entrada.taxaDeJuros, DIAS_UTEIS_NO_ANO
+            )
 
             val jurosCalculadosNoAno = arredondar(saldoDevedor - saldoInicialPeriodo)
+
             anosRestantes = entrada.prazo - ano + 1
+
             val jurosPagos = arredondar((jurosRemanescente + jurosCalculadosNoAno) / anosRestantes)
             val valorParcela = arredondar(amortizacaoAnualCapital + jurosPagos)
 
@@ -50,15 +60,6 @@ class CalculadorAnual (
             jurosRemanescente = arredondar((jurosRemanescente + jurosCalculadosNoAno) - jurosPagos)
 
             val saldoDevedorAtualizado = arredondar(saldoCapital + jurosRemanescente)
-
-            if(ano == entrada.prazo){
-                println("Juros calculados: " + jurosCalculadosNoAno)
-                println("Juros pagos: " + jurosPagos)
-                println("Valor da Parcela: " + valorParcela)
-                println("Juros remancente: " + jurosRemanescente)
-                println("saldo capital: " + saldoCapital)
-                println("===============================")
-            }
 
             listaParcelas.add(
                 Parcela(
@@ -71,6 +72,17 @@ class CalculadorAnual (
                 )
             )
         }
+
+        if (listaParcelas.isNotEmpty()) {
+            val ultima = listaParcelas.last()
+            if (ultima.saldoDevedor != 0.0) {
+                listaParcelas[listaParcelas.lastIndex] = ajusteResiduo.ajustar(
+                    ultima,
+                    ::arredondar
+                )
+            }
+        }
+
         return SimulacaoResultado(
             valorSimulacao = entrada.valorSimulacao,
             prazo = entrada.prazo,
@@ -79,32 +91,7 @@ class CalculadorAnual (
             parcelas = listaParcelas
         )
     }
-
-    private fun calcularTaxaDiaria(taxaDeJuros: Double): Double{
-        return (1 + (taxaDeJuros / 100)).pow(1.0 / DIAS_UTEIS_NO_ANO) - 1
-    }
-
-    fun arredondar(valor: Double): Double {
+    private fun arredondar(valor: Double): Double {
         return BigDecimal(valor).setScale(2, RoundingMode.HALF_EVEN).toDouble()
     }
-
-    fun calcularJuros(saldo: Double, taxaDeJuros: Double): Double {
-        val taxaDiaria = calcularTaxaDiaria(taxaDeJuros)
-        var saldoAtualizado = saldo
-        repeat(DIAS_UTEIS_NO_ANO) {
-            saldoAtualizado *= (1.0 + taxaDiaria)
-        }
-        return saldoAtualizado
-    }
-
-    fun calcularJurosComTaxaEfetivaAnual(saldo: Double, taxaNominalAA: Double): Double {
-        val taxaEfetiva = taxaEfetivaAnual(taxaNominalAA) // ≈ 6,1829% para 6% nominal
-        return saldo * (1.0 + taxaEfetiva)
-    }
-
-    fun taxaEfetivaAnual(taxaNominalAA: Double, diasNoAno: Int = DIAS_UTEIS_NO_ANO): Double {
-        val iNom = taxaNominalAA / 100.0
-        return (1.0 + iNom / diasNoAno).pow(diasNoAno.toDouble()) - 1.0
-    }
-
 }

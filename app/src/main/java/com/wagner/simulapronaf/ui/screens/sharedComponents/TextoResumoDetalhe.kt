@@ -1,6 +1,5 @@
-package com.wagner.simulapronaf.ui.components.shared
+package com.wagner.simulapronaf.ui.screens.sharedComponents
 
-import androidx.annotation.Size
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth

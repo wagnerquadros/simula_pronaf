@@ -1,4 +1,4 @@
-package com.wagner.simulapronaf.ui.components.shared
+package com.wagner.simulapronaf.ui.screens.sharedComponents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,20 +16,21 @@ import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 import kotlin.math.roundToInt
 
 @Composable
-fun SliderDecimal(
-    valor: Float,
-    onValorChange: (Float) -> Unit,
-    faixa: ClosedFloatingPointRange<Float>,
-    passo: Float = 100f,
+fun SliderValorInteiro(
+    valor: Int,
+    onValorChange: (Int) -> Unit,
+    faixa: IntRange,
     modifier: Modifier = Modifier
 ) {
+    val steps = faixa.last - faixa.first - 1
+
     Slider(
-        value = valor,
+        value = valor.toFloat(),
         onValueChange = {
-            val arredondado = (it / passo).roundToInt() * passo
-            onValorChange(arredondado)
+            onValorChange(it.roundToInt().coerceIn(faixa))
         },
-        valueRange = faixa,
+        valueRange = faixa.first.toFloat()..faixa.last.toFloat(),
+        steps = steps,
         modifier = modifier,
         colors = SliderDefaults.colors(
             thumbColor = VerdePetroleo,
@@ -42,16 +43,17 @@ fun SliderDecimal(
 
 @Preview(showBackground = true)
 @Composable
-fun SliderDecimalPreview() {
-    var valor by remember { mutableStateOf(3.0f) }
+fun SliderValorInteiroPreview() {
+    var valor by remember { mutableStateOf(5) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        SliderDecimal(
+
+        SliderValorInteiro(
             valor = valor,
             onValorChange = { valor = it },
-            faixa = 1f..6f,
-            passo = 0.5f,
+            faixa = 1..10,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
+

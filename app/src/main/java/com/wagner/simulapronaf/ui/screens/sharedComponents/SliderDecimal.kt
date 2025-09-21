@@ -1,10 +1,9 @@
-package com.wagner.simulapronaf.ui.components.shared
+package com.wagner.simulapronaf.ui.screens.sharedComponents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Slider
 import androidx.compose.material.SliderDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,27 +11,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.wagner.simulapronaf.ui.theme.CinzaTextoPrimario
 import com.wagner.simulapronaf.ui.theme.VerdePetroleo
 import kotlin.math.roundToInt
 
 @Composable
-fun SliderValorInteiro(
-    valor: Int,
-    onValorChange: (Int) -> Unit,
-    faixa: IntRange,
+fun SliderDecimal(
+    valor: Float,
+    onValorChange: (Float) -> Unit,
+    faixa: ClosedFloatingPointRange<Float>,
+    passo: Float = 100f,
     modifier: Modifier = Modifier
 ) {
-    val steps = faixa.last - faixa.first - 1
-
     Slider(
-        value = valor.toFloat(),
+        value = valor,
         onValueChange = {
-            onValorChange(it.roundToInt().coerceIn(faixa))
+            val arredondado = (it / passo).roundToInt() * passo
+            onValorChange(arredondado)
         },
-        valueRange = faixa.first.toFloat()..faixa.last.toFloat(),
-        steps = steps,
+        valueRange = faixa,
         modifier = modifier,
         colors = SliderDefaults.colors(
             thumbColor = VerdePetroleo,
@@ -45,17 +42,16 @@ fun SliderValorInteiro(
 
 @Preview(showBackground = true)
 @Composable
-fun SliderValorInteiroPreview() {
-    var valor by remember { mutableStateOf(5) }
+fun SliderDecimalPreview() {
+    var valor by remember { mutableStateOf(3.0f) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-
-        SliderValorInteiro(
+        SliderDecimal(
             valor = valor,
             onValorChange = { valor = it },
-            faixa = 1..10,
+            faixa = 1f..6f,
+            passo = 0.5f,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
-

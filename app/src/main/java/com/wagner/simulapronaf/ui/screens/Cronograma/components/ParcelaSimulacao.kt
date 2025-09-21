@@ -9,7 +9,11 @@ fun ParcelaSimulacao(){
 
     Column {
         DataValorParcelaText("10/10/205", 100000.00f)
-        DetalharCardExpandable()
+        DetalharCardExpandable(
+            capital = 10000.00,
+            juros = 1000.00,
+            saldo = 10000.00
+        )
     }
 
 }
