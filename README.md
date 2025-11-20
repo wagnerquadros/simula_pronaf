@@ -1,5 +1,5 @@
 # SimulaPRONAF
-![version](https://img.shields.io/badge/version-v2.0.0-blue?style=for-the-badge)
+![version](https://img.shields.io/badge/version-v2.1.1-blue?style=for-the-badge)
 ![status](https://img.shields.io/badge/status-STABLE-brightgreen?style=for-the-badge)
 
 **SimulaPRONAF** é um aplicativo Android desenvolvido para auxiliar agricultores familiares a simularem rapidamente condições de crédito rural com base no **PRONAF (Programa Nacional de Fortalecimento da Agricultura Familiar)**. Nesta versão MVP, o foco é oferecer uma simulação simples, intuitiva e acessível em duas telas principais.
@@ -126,6 +126,11 @@ Para compilar o projeto, é necessário ter permissões de acesso.
 3. Rode no emulador ou dispositivo físico (API 26+).  
 
 ## 📝 CHANGELOG
+
+### [2.1.1] - 2025-11-20
+#### Adicionado
+- Splash Screen com animação de fade-in no logo.
+- Novo ícone do aplicativo, aplicado ao manifesto e compatível com o Adaptive Icon do Android.
 
 ### [2.0.0] - 2025-09-21
 #### Alterado
