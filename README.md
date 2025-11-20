@@ -130,7 +130,7 @@ Para compilar o projeto, é necessário ter permissões de acesso.
 ### [2.1.1] - 2025-11-20
 #### Adicionado
 - Splash Screen com animação de fade-in no logo.
-- Novo ícone do aplicativo, aplicado ao manifesto e compatível como Adaptive Icon do Android.
+- Novo ícone do aplicativo, aplicado ao manifesto e compatível com o Adaptive Icon do Android.
 
 ### [2.0.0] - 2025-09-21
 #### Alterado
