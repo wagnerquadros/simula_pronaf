@@ -26,7 +26,7 @@ import com.wagner.simulapronaf.domain.models.ModalidadeEnum
 import com.wagner.simulapronaf.domain.models.SimulacaoEntrada
 import com.wagner.simulapronaf.domain.models.carenciaFromString
 import com.wagner.simulapronaf.domain.service.impl.SimulacaoService
-import com.wagner.simulapronaf.ui.navigation.SimulacaoViewModel
+import com.wagner.simulapronaf.navigation.SimulacaoViewModel
 import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ParcelasCard
 import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.TaxaCard
 import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.components.ValorCard

@@ -13,7 +13,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -24,9 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.wagner.simulapronaf.domain.models.Parcela
 import com.wagner.simulapronaf.domain.models.SimulacaoResultado
 import com.wagner.simulapronaf.domain.service.utils.toBRL
-import com.wagner.simulapronaf.ui.navigation.SimulacaoViewModel
 import com.wagner.simulapronaf.ui.screens.Cronograma.components.ParcelasLista
-import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.SimulacaoRapidaScreen
 import com.wagner.simulapronaf.ui.screens.sharedComponents.BarraSuperior
 import com.wagner.simulapronaf.ui.screens.sharedComponents.DivisorHorizontal
 import com.wagner.simulapronaf.ui.screens.sharedComponents.TextoResumoDetalhe
