@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.wagner.simulapronaf.ui.navigation.AppNav
+import com.wagner.simulapronaf.navigation.AppNav
 
 
 class MainActivity : ComponentActivity() {

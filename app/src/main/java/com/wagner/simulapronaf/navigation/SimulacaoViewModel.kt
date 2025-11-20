@@ -1,4 +1,4 @@
-package com.wagner.simulapronaf.ui.navigation
+package com.wagner.simulapronaf.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

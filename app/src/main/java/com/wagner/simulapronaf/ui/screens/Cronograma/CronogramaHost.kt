@@ -2,7 +2,7 @@ package com.wagner.simulapronaf.ui.screens.Cronograma
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.wagner.simulapronaf.ui.navigation.SimulacaoViewModel
+import com.wagner.simulapronaf.navigation.SimulacaoViewModel
 
 @Composable
 fun CronogramaHost(vmCompartilhado: SimulacaoViewModel) {
