@@ -5,9 +5,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.wagner.simulapronaf.ui.screens.Cronograma.CronogramaHost
-import com.wagner.simulapronaf.ui.screens.SimulacaoRapida.SimulacaoRapidaScreen
-import com.wagner.simulapronaf.ui.screens.SplashScreen.SplashScreen
+import com.wagner.simulapronaf.ui.simulacao.Cronograma.CronogramaHost
+import com.wagner.simulapronaf.ui.simulacao.SimulacaoRapida.SimulacaoRapidaScreen
+import com.wagner.simulapronaf.ui.SplashScreen.SplashScreen
+import com.wagner.simulapronaf.ui.simulacao.SimulacaoViewModel
 
 @Composable
 fun AppNav() {
@@ -23,11 +24,11 @@ fun AppNav() {
         composable("entrada") {
             SimulacaoRapidaScreen(
                 onSimularClick = { nav.navigate("cronograma") },
-                vmCompartilhado = vmCompartilhado
+                simulacaoViewModel = vmCompartilhado
             )
         }
         composable("cronograma") {
-            CronogramaHost(vmCompartilhado = vmCompartilhado)
+            CronogramaHost(simulacaoViewModel = vmCompartilhado)
         }
     }
 }

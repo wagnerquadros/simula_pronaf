@@ -16,13 +16,12 @@ O **SimulaPRONAF** adota a arquitetura **MVVM (Model–View–ViewModel)**, ampl
 A aplicação é estruturada em três camadas principais:
 
 - **View (UI):** composta por telas desenvolvidas em **Jetpack Compose**, é responsável pela **interação com o usuário** e pela **exibição dos dados** provenientes da camada de ViewModel.
-- **ViewModel:** atua como intermediária entre a interface e a lógica de negócio, **gerenciando o estado da tela**, processando **eventos gerados pelo usuário** e coordenando as chamadas para os casos de uso e operações de cálculo.
+- **ViewModel:** atua como intermediária entre a interface de usuário e a lógica de negócio, **gerenciando o estado da tela**, processando **eventos gerados pelo usuário** e coordenando as chamadas para os casos de uso e operações de cálculo.
 - **Camada de Lógica:** encapsula a **operação principal de simulação** — cálculo de parcelas, taxas e valores — garantindo **independência total da interface gráfica** e maior testabilidade do código.
 
 > **Fluxo de Comunicação:**  
-> `View → ViewModel → Camada de Lógica → ViewModel → View`
 
-
+<img src="docs/img/MVVM.png" alt="MVVM" width="25%"/>
 
 
 ## Funcionalidades do MVP
